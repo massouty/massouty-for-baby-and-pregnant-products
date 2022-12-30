@@ -1,0 +1,46 @@
+<!-- Include the PayPal JavaScript SDK -->
+<script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID"></script>
+
+<!-- Add a "Pay with PayPal" button -->
+<div id="paypal-button"></div>
+
+<script>
+  // Render the PayPal button
+  paypal.Buttons({
+
+    // Set your client ID
+    clientId: 'YOUR_CLIENT_ID',
+
+    // Set the amount and currency
+    amount: '10.00',
+    currency: 'USD',
+
+    // Set the button style and layout
+    style: {
+      layout: 'horizontal',
+      size: 'medium',
+      shape: 'rect',
+      color: 'gold'
+    },
+
+    // Set up a payment
+    createOrder: function(data, actions) {
+      return actions.order.create({
+        purchase_units: [{
+          amount: {
+            value: '10.00'
+          }
+        }]
+      });
+    },
+
+    // Execute the payment
+    onApprove: function(data, actions) {
+      return actions.order.capture().then(function(details) {
+        // Show a success message
+        alert('Payment successful!');
+      });
+    }
+
+  }).render('#paypal-button');
+</script>
